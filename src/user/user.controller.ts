@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 
 const PHRASE = 'There is not user with id=';
 
-@Controller('user')
+@Controller('v1/user')
 export class UserController {
   constructor(private users: UserService) {}
 

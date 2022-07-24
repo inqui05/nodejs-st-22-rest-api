@@ -6,15 +6,7 @@ import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
-  private testUser: UserDto = {
-    id: '1',
-    login: 'test',
-    password: 'test',
-    age: 20,
-    isDeleted: false,
-  };
-
-  public users: UserDto[] = [this.testUser];
+  public users: UserDto[] = [];
 
   getUsers(): UserDto[] {
     return this.users.filter((user: UserDto): boolean => user.isDeleted === false);
