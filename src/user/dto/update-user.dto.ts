@@ -1,9 +1,9 @@
-import { IsDefined, IsInt, IsString, Matches, Max, Min, MinLength } from 'class-validator';
+import { IsDefined, IsInt, IsNotEmpty, IsString, Matches, Max, Min, MinLength } from 'class-validator';
 
 export class UpdateUserDto {
   @IsDefined({ message: "You can't update the user if you don't specify a login" })
   @IsString({ message: 'Login must be a string' })
-  @MinLength(3, { message: 'Login must contain at least 3 characters' })
+  @IsNotEmpty()
   login: string;
 
   @IsDefined({ message: "You can't update a user if you don't specify a password" })

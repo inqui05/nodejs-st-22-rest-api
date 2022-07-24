@@ -56,7 +56,7 @@ export class UserService {
     }
 
     const userIndex = this.users.findIndex((user: UserDto): boolean => user.id === id);
-    if (userIndex >= 0) {
+    if (userIndex >= 0 && !this.users[userIndex].isDeleted) {
       this.users[userIndex] = { ...this.users[userIndex], ...newInfo };
     } else {
       throw new HttpException(PHRASE + id, HttpStatus.NOT_FOUND);
