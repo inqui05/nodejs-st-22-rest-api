@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AutoSuggestUserInfoDto } from './dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from './dto/new-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
+
+const PHRASE = 'There is not user with id=';
 
 @Injectable()
 export class UserService {
@@ -12,8 +14,12 @@ export class UserService {
     return this.users.filter((user: UserDto): boolean => user.isDeleted === false);
   }
 
-  getUserById(id: string): UserDto | undefined {
-    return this.users.find((user: UserDto): boolean => user.id === id && user.isDeleted === false);
+  getUserById(id: string): UserDto {
+    const result = this.users.find((user: UserDto): boolean => user.id === id && user.isDeleted === false);
+    if (!result) {
+      throw new HttpException(`${PHRASE}${id}`, HttpStatus.NOT_FOUND);
+    }
+    return result;
   }
 
   getUsersWithParams(params: AutoSuggestUserInfoDto): UserDto[] {
@@ -32,28 +38,41 @@ export class UserService {
   }
 
   createUser(userInfo: NewUserDto): UserDto {
-    const newUser: UserDto = { ...userInfo, id: this.createId(), isDeleted: false };
-    this.users.push(newUser);
-    return newUser;
+    const checkLogin = this.users.filter((user: UserDto): boolean => user.login === userInfo.login);
+
+    if (checkLogin.length) {
+      throw new HttpException("The user's login must be unique", HttpStatus.BAD_REQUEST);
+    } else {
+      const newUser: UserDto = { ...userInfo, id: this.createId(), isDeleted: false };
+      this.users.push(newUser);
+      return newUser;
+    }
   }
 
-  updateUser(id: string, newInfo: UpdateUserDto): UserDto | undefined {
+  updateUser(id: string, newInfo: UpdateUserDto): UserDto {
+    const checkLogin = this.users.filter((user: UserDto): boolean => user.login === newInfo.login);
+    if (checkLogin.length > 1 || (checkLogin.length && checkLogin[0].id !== id)) {
+      throw new HttpException("The user's login must be unique", HttpStatus.BAD_REQUEST);
+    }
+
     const userIndex = this.users.findIndex((user: UserDto): boolean => user.id === id);
     if (userIndex >= 0) {
       this.users[userIndex] = { ...this.users[userIndex], ...newInfo };
     } else {
-      return undefined;
+      throw new HttpException(PHRASE + id, HttpStatus.NOT_FOUND);
     }
 
     return this.users[userIndex];
   }
 
-  removeUserById(id: string): UserDto | undefined {
+  removeUserById(id: string): UserDto {
     const user = this.users.find((user: UserDto): boolean => user.id === id && !user.isDeleted);
     if (user) {
       user.isDeleted = true;
+      return user;
+    } else {
+      throw new HttpException(`${PHRASE}${id}`, HttpStatus.NOT_FOUND);
     }
-    return user;
   }
 
   private createId(): string {
@@ -61,6 +80,7 @@ export class UserService {
   }
 
   private trimArray(users: UserDto[], limit: number): UserDto[] {
+    users.sort((a, b) => a.login.localeCompare(b.login));
     return users.length > 0 && users.length > limit ? users.slice(0, limit) : users;
   }
 }
