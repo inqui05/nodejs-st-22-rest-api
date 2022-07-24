@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AutoSuggestUserInfoDto } from './dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from './dto/new-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -37,12 +37,12 @@ export class UserService {
     return newUser;
   }
 
-  updateUser(id: string, newInfo: UpdateUserDto): UserDto | undefined {
+  updateUser(id: string, newInfo: UpdateUserDto): UserDto {
     const userIndex = this.users.findIndex((user: UserDto): boolean => user.id === id);
-    if (userIndex >= 0) {
+    if (userIndex >= 0 && !this.users[userIndex].isDeleted) {
       this.users[userIndex] = { ...this.users[userIndex], ...newInfo };
     } else {
-      return undefined;
+      throw new HttpException(`There is not user with id=${id}`, HttpStatus.NOT_FOUND)
     }
 
     return this.users[userIndex];
