@@ -35,12 +35,13 @@ export class UserController {
   }
 
   @Put(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): void {
+  @HttpCode(HttpStatus.ACCEPTED)
+  updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): UserDto {
     const result = this.users.updateUser(id, userInfo);
     if(!result) {
       throw new HttpException(`${PHRASE}${id}`, HttpStatus.NOT_FOUND);
     }
+    return result;
   }
 
   @Delete(':id')
