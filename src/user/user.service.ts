@@ -61,6 +61,7 @@ export class UserService {
   }
 
   private trimArray(users: UserDto[], limit: number): UserDto[] {
+    users.sort((a, b) => a.login.localeCompare(b.login));
     return users.length > 0 && users.length > limit ? users.slice(0, limit) : users;
   }
 }
