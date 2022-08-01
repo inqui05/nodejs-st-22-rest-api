@@ -13,8 +13,8 @@ export class UserController {
   constructor(private users: UserService) {}
 
   @Get(':id')
-  getUserById(@Param('id') id: string): UserDto {
-    const result = this.users.getUserById(id);
+  async getUserById(@Param('id') id: string): Promise<UserDto> {
+    const result = await this.users.getUserById(id);
     if (!result) {
       throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
     }
@@ -32,8 +32,8 @@ export class UserController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createUser(@Body() userInfo: NewUserDto): UserDto {
-    const result = this.users.createUser(userInfo);
+  async createUser(@Body() userInfo: NewUserDto): Promise<UserDto> {
+    const result = await this.users.createUser(userInfo);
     if (!result) {
       throw new HttpException(USER_MUST_BE_UNIQUE, HttpStatus.BAD_REQUEST);
     }
@@ -43,8 +43,8 @@ export class UserController {
   @Put(':id')
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.ACCEPTED)
-  updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): UserDto {
-    const result = this.users.updateUser(id, userInfo);
+  async updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): Promise<UserDto> {
+    const result = await this.users.updateUser(id, userInfo);
     if (!result) {
       throw new HttpException(USER_MUST_BE_UNIQUE, HttpStatus.BAD_REQUEST);
     }
@@ -53,8 +53,8 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  removeUserById(@Param('id') id: string): void {
-    const result = this.users.removeUserById(id);
+  async removeUserById(@Param('id') id: string): Promise<void> {
+    const result = await this.users.removeUserById(id);
     if (!result) {
       throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
     }
