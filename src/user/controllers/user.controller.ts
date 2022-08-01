@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AutoSuggestUserInfoDto } from './dto/autoSuggestUserInfo.dto';
-import { NewUserDto } from './dto/new-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
-import { UserService } from './user.service';
+import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
+import { NewUserDto } from '../dto/new-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserDto } from '../dto/user.dto';
+import { UserService } from '../services/user.service';
 
 const WRONG_ID = 'There is not user with id=';
 const USER_MUST_BE_UNIQUE = 'The user\'s login must be unique';

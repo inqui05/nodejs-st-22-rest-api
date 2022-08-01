@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { AutoSuggestUserInfoDto } from './dto/autoSuggestUserInfo.dto';
-import { User } from './models/user.model';
+import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
+import { User } from '../models/user.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { NewUserDto } from './dto/new-user.dto';
-import { UserDto } from './dto/user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { NewUserDto } from '../dto/new-user.dto';
+import { UserDto } from '../dto/user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UserService {
