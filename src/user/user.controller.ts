@@ -45,8 +45,8 @@ export class UserController {
   @HttpCode(HttpStatus.ACCEPTED)
   async updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): Promise<UserDto> {
     const result = await this.users.updateUser(id, userInfo);
-    if (!result) {
-      throw new HttpException(USER_MUST_BE_UNIQUE, HttpStatus.BAD_REQUEST);
+    if (typeof result === 'string') {
+      throw new HttpException(result, HttpStatus.BAD_REQUEST);
     }
     return result;
   }
