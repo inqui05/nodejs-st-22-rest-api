@@ -10,6 +10,8 @@ module.exports = {
         password: "12345678abc",
         age: 23,
         isDeleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: uuidv4(),
@@ -17,13 +19,8 @@ module.exports = {
         password: "abc12345678",
         age: 30,
         isDeleted: false,
-      },
-      {
-        id: uuidv4(),
-        login: "third",
-        password: "1234abc5678",
-        age: 35,
-        isDeleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]);
   },
