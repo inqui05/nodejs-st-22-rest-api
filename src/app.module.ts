@@ -17,6 +17,7 @@ import { UserModule } from './user/user.module';
       models: [User],
       autoLoadModels: true,
       synchronize: true,
+      define: { timestamps: false },
     }),
     UserModule,
   ],

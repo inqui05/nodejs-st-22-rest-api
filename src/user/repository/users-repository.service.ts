@@ -21,20 +21,21 @@ export class UserRepository {
   }
 
   async getSome(params: AutoSuggestUserInfoDto): Promise<UserDto[]> {
-    return this.userModel.findAll({
-      where: { login: {[Op.iLike]: `%${params.loginSubstring}%` }},
+    const users = await this.userModel.findAll({
+      where: {[Op.and]: [{ login:
+        {[Op.iLike]: `%${params.loginSubstring}%` }}, { isDeleted: false }]},
       limit: params.limit
     });
+    return users.sort((a, b) => a.login.localeCompare(b.login));
   }
 
   async create(newUserInfo: NewUserDto): Promise<UserDto | null> {
     const isLoginUnique = await this.checkIsLoginUnique(newUserInfo.login);
-    return isLoginUnique ? await this.userModel.create(newUserInfo) : null;
+    return isLoginUnique ? this.userModel.create(newUserInfo) : null;
   }
 
-  async remove(id: string): Promise<User | null> {
-    await this.userModel.update({ isDeleted: true }, { where: { id } });
-    return this.userModel.findOne({ where: { id } });
+  async remove(id: string): Promise<void> {
+    this.userModel.update({ isDeleted: true }, { where: { id } });
   }
 
   async update(id: string, newUserInfo: UpdateUserDto): Promise<UserDto | null> {

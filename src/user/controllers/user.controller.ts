@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from '../dto/new-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -43,7 +43,7 @@ export class UserController {
   @Put(':id')
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.ACCEPTED)
-  async updateUser(@Param('id') id: string, @Body() userInfo: UpdateUserDto): Promise<UserDto> {
+  async updateUser(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() userInfo: UpdateUserDto): Promise<UserDto> {
     const result = await this.users.updateUser(id, userInfo);
     if (!result) {
       throw new HttpException(USER_MUST_BE_UNIQUE, HttpStatus.BAD_REQUEST);
@@ -53,10 +53,8 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async removeUserById(@Param('id') id: string): Promise<void> {
-    const result = await this.users.removeUserById(id);
-    if (!result) {
-      throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
-    }
+  async removeUserById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<void> {
+    await this.getUserById(id);
+    this.users.removeUserById(id);
   }
 }

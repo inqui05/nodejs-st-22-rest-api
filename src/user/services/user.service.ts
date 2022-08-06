@@ -23,8 +23,8 @@ export class UserService {
     return this.UserRepository.create(newUserInfo);
   }
 
-  async removeUserById(id: string): Promise<User | null> {
-    return this.UserRepository.remove(id);
+  async removeUserById(id: string): Promise<void> {
+    this.UserRepository.remove(id);
   }
 
   async updateUser(id: string, newUserInfo: UpdateUserDto): Promise<UserDto | null> {
