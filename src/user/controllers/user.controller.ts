@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from '../dto/new-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
