@@ -3,7 +3,7 @@ import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { User } from '../models/user.model';
 import { UserRepository } from '../repository/users-repository.service';
 import { NewUserDto } from '../dto/new-user.dto';
-import { UserDto } from '../dto/user.dto';
+import { UserDto } from '../interfaces/user.interface';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()

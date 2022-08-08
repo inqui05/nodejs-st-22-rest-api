@@ -1,0 +1,32 @@
+
+> rest-api@0.0.1 start
+> nest start
+
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:40 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:41 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +1098ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:41 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSequelizeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:41 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:41 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +2ms[39m
+Executing (default): SELECT 1+1 AS result
+Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Users'
+Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Users' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Groups'
+Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Groups' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSequelizeCoreModule dependencies initialized[39m[38;5;3m +1894ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSequelizeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSequelizeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGroupModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUserController {/v1/users}:[39m[38;5;3m +17ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/users/:id, GET} route[39m[38;5;3m +8ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/users, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/users, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/users/:id, PUT} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/users/:id, DELETE} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mGroupController {/v1/groups}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/groups, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/groups, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/groups/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/groups/:id, PUT} route[39m[38;5;3m +28ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/v1/groups/:id, DELETE} route[39m[38;5;3m +8ms[39m
+[32m[Nest] 13152  - [39m08.08.2022, 14:16:43 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +37ms[39m
