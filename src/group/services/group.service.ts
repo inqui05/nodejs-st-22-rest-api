@@ -27,4 +27,8 @@ export class GroupService {
   async remove(id: string): Promise<void> {
     this.groupRepository.remove(id);
   }
+
+  async addUsersToGroup(id: string, usersIds: string[]): Promise<void> {
+    this.groupRepository.addUsersToGroup(id, usersIds);
+  }
 }

@@ -3,6 +3,7 @@ import { GroupService } from '../services/group.service';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { IGroup } from '../interfaces/group.interface';
+import { AddUsersToGroupDto } from '../dto/add-users-to-group.dto';
 
 const WRONG_ID = 'There is not the group with id=';
 const GROUP_NAME_MUST_BE_UNIQUE = 'The name of the group must be unique';
@@ -52,5 +53,17 @@ export class GroupController {
   async remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<void> {
     await this.groupService.findOne(id);
     this.groupService.remove(id);
+  }
+
+  @Post(':id')
+  async addUsersToGroup(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() usersIds: AddUsersToGroupDto
+    ): Promise<void> {
+      const result = await this.groupService.findOne(id);
+      if (!result) {
+        throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
+      }
+      this.groupService.addUsersToGroup(id, usersIds.users);
   }
 }
