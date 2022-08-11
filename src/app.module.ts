@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 import { User } from './user/models/user.model';
@@ -7,6 +7,7 @@ import { Group } from './group/models/group.model';
 import { UserModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
 import { UserGroup } from './user-group/models/user-group.model';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 
 const sequelizeOption: SequelizeModuleOptions = {
   dialect: 'postgres',
@@ -31,4 +32,10 @@ const sequelizeOption: SequelizeModuleOptions = {
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('*');
+  }
+}
