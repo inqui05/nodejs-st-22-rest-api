@@ -22,8 +22,9 @@ export class GroupController {
   }
 
   @Get()
-  async findAll(): Promise<IGroup[]> {
-    return await this.groupService.findAll();
+  async findAll(): Promise<void> {
+    //return await this.groupService.findAll();
+    Promise.reject(new Error('Resource not yet loaded!'));
   }
 
   @Get(':id')
