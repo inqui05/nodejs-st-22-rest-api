@@ -7,7 +7,9 @@ import { Group } from './group/models/group.model';
 import { UserModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
 import { UserGroup } from './user-group/models/user-group.model';
-import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { ErrorsInterceptor } from './common/interceptors/error.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 const sequelizeOption: SequelizeModuleOptions = {
   dialect: 'postgres',
@@ -30,12 +32,15 @@ const sequelizeOption: SequelizeModuleOptions = {
     GroupModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorsInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
