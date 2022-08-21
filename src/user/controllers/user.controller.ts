@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { CheckTokenGuard } from 'src/auth/guards/check-token.guard';
 import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from '../dto/new-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -12,6 +13,7 @@ const USER_MUST_BE_UNIQUE = 'The user\'s login must be unique';
 export class UserController {
   constructor(private users: UserService) {}
 
+  @UseGuards(CheckTokenGuard)
   @Get(':id')
   async getUserById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<UserDto> {
     const result = await this.users.getUserById(id);
@@ -21,6 +23,7 @@ export class UserController {
     return result;
   }
 
+  @UseGuards(CheckTokenGuard)
   @Get()
   getAutoSuggestUsers(@Query() params: AutoSuggestUserInfoDto) {
     if (Object.keys(params).length == 0) {
@@ -30,6 +33,7 @@ export class UserController {
     return this.users.getUsersWithParams(params);
   }
 
+  @UseGuards(CheckTokenGuard)
   @Post()
   async createUser(@Body() userInfo: NewUserDto): Promise<UserDto> {
     const result = await this.users.createUser(userInfo);
@@ -39,6 +43,7 @@ export class UserController {
     return result;
   }
 
+  @UseGuards(CheckTokenGuard)
   @Put(':id')
   @HttpCode(HttpStatus.ACCEPTED)
   async updateUser(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() userInfo: UpdateUserDto): Promise<UserDto> {
@@ -49,6 +54,7 @@ export class UserController {
     return result;
   }
 
+  @UseGuards(CheckTokenGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async removeUserById(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<void> {
