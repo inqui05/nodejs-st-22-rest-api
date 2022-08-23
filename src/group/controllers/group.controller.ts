@@ -9,11 +9,11 @@ import { CheckTokenGuard } from 'src/auth/guards/check-token.guard';
 const WRONG_ID = 'There is not the group with id=';
 const GROUP_NAME_MUST_BE_UNIQUE = 'The name of the group must be unique';
 
+@UseGuards(CheckTokenGuard)
 @Controller('v1/groups')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
-  @UseGuards(CheckTokenGuard)
   @Post()
   async create(@Body() createGroupDto: CreateGroupDto): Promise<IGroup | null> {
     const result = await this.groupService.create(createGroupDto);
@@ -23,13 +23,11 @@ export class GroupController {
     return result;
   }
 
-  @UseGuards(CheckTokenGuard)
   @Get()
   async findAll(): Promise<IGroup[]> {
     return await this.groupService.findAll();
   }
 
-  @UseGuards(CheckTokenGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<IGroup | null> {
     const result = await this.groupService.findOne(id);
@@ -39,7 +37,6 @@ export class GroupController {
     return result;
   }
 
-  @UseGuards(CheckTokenGuard)
   @Put(':id')
   async update(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() updateGroupDto: UpdateGroupDto): Promise<IGroup | null> {
     const groupExist = await this.groupService.findOne(id);
@@ -54,14 +51,12 @@ export class GroupController {
     return result;
   }
 
-  @UseGuards(CheckTokenGuard)
   @Delete(':id')
   async remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): Promise<void> {
     await this.groupService.findOne(id);
     this.groupService.remove(id);
   }
 
-  @UseGuards(CheckTokenGuard)
   @Post(':id')
   async addUsersToGroup(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,

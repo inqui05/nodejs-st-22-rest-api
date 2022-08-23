@@ -13,13 +13,13 @@ export class AuthRepository {
     private jwtService: JwtService
   ) {}
 
-  async login(login: string, password: string): Promise<IToken | null> {
+  async login(username: string, password: string): Promise<IToken | null> {
     const user = await this.userModel.findOne({ where: { [Op.and]: [
-      { login }, { isDeleted: false }
+      { login: username }, { isDeleted: false }
     ] }});
 
     if (user && user.password === password) {
-      const payload = { id: user.id, login: user.login };
+      const payload = { id: user.id, username: user.login };
       return { token: this.jwtService.sign(payload) };
     }
 

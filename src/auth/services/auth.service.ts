@@ -9,6 +9,6 @@ export class AuthService {
   constructor(private readonly authRepo: AuthRepository) {}
 
   async login(authDto: CreateAuthDto): Promise<IToken | null> {
-    return this.authRepo.login(authDto.login, authDto.password);
+    return this.authRepo.login(authDto.username, authDto.password);
   }
 }

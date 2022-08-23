@@ -33,7 +33,6 @@ export class UserController {
     return this.users.getUsersWithParams(params);
   }
 
-  @UseGuards(CheckTokenGuard)
   @Post()
   async createUser(@Body() userInfo: NewUserDto): Promise<UserDto> {
     const result = await this.users.createUser(userInfo);
