@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpStatus, HttpException, Put, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpStatus, HttpException, Put, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { GroupService } from '../services/group.service';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { IGroup } from '../interfaces/group.interface';
 import { AddUsersToGroupDto } from '../dto/add-users-to-group.dto';
+import { CheckTokenGuard } from 'src/auth/guards/check-token.guard';
 
 const WRONG_ID = 'There is not the group with id=';
 const GROUP_NAME_MUST_BE_UNIQUE = 'The name of the group must be unique';
 
+@UseGuards(CheckTokenGuard)
 @Controller('v1/groups')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}

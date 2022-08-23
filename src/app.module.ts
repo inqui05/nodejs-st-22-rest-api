@@ -10,6 +10,7 @@ import { UserGroup } from './group/models/user-group.model';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { ErrorsInterceptor } from './common/interceptors/error.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 const sequelizeOption: SequelizeModuleOptions = {
   dialect: 'postgres',
@@ -30,6 +31,7 @@ const sequelizeOption: SequelizeModuleOptions = {
     SequelizeModule.forRoot(sequelizeOption),
     UserModule,
     GroupModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [

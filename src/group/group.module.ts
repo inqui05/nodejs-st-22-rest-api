@@ -6,9 +6,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Group } from './models/group.model';
 import { User } from 'src/user/models/user.model';
 import { UserGroup } from 'src/group/models/user-group.model';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Group, User, UserGroup])],
+  imports: [SequelizeModule.forFeature([Group, User, UserGroup]), AuthModule],
   controllers: [GroupController],
   providers: [GroupService, GroupRepository],
 })
