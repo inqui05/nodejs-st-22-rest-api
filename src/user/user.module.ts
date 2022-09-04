@@ -7,10 +7,17 @@ import { UserRepository } from './repository/users-repository.service';
 import { Group } from 'src/group/models/group.model';
 import { UserGroup } from 'src/group/models/user-group.model';
 import { AuthModule } from 'src/auth/auth.module';
+import { InMemoryUserRepository } from './repository/in-memory-user-repository.service';
 
 @Module({
   imports: [SequelizeModule.forFeature([User, Group, UserGroup]), AuthModule],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [
+    UserService,
+    {
+      provide: 'UserRepository',
+      useClass: process.env.NODE_ENV === 'test' ? InMemoryUserRepository : UserRepository,
+    },
+  ],
 })
 export class UserModule {}
