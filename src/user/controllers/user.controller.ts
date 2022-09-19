@@ -1,13 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { USER_MUST_BE_UNIQUE, WRONG_ID } from '../../common/vars/vars';
 import { CheckTokenGuard } from '../../auth/guards/check-token.guard';
 import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { NewUserDto } from '../dto/new-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { IUser } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
-
-const WRONG_ID = 'There is not user with id=';
-const USER_MUST_BE_UNIQUE = 'The user\'s login must be unique';
 
 @Controller('v1/users')
 export class UserController {

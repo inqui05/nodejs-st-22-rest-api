@@ -5,9 +5,7 @@ import { UpdateGroupDto } from '../dto/update-group.dto';
 import { IGroup } from '../interfaces/group.interface';
 import { AddUsersToGroupDto } from '../dto/add-users-to-group.dto';
 import { CheckTokenGuard } from '../../auth/guards/check-token.guard';
-
-const WRONG_ID = 'There is not the group with id=';
-const GROUP_NAME_MUST_BE_UNIQUE = 'The name of the group must be unique';
+import { GROUP_NAME_MUST_BE_UNIQUE, WRONG_GROUP_ID } from '../../common/vars/vars';
 
 @UseGuards(CheckTokenGuard)
 @Controller('v1/groups')
@@ -15,7 +13,7 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  async create(@Body() createGroupDto: CreateGroupDto): Promise<IGroup | null> {
+  async create(@Body() createGroupDto: CreateGroupDto): Promise<IGroup> {
     const result = await this.groupService.create(createGroupDto);
     if (!result) {
       throw new HttpException(GROUP_NAME_MUST_BE_UNIQUE, HttpStatus.BAD_REQUEST);
@@ -29,19 +27,19 @@ export class GroupController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<IGroup | null> {
+  async findOne(@Param('id') id: string): Promise<IGroup> {
     const result = await this.groupService.findOne(id);
     if (!result) {
-      throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
+      throw new HttpException(`${WRONG_GROUP_ID}${id}`, HttpStatus.NOT_FOUND);
     }
     return result;
   }
 
   @Put(':id')
-  async update(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() updateGroupDto: UpdateGroupDto): Promise<IGroup | null> {
+  async update(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body() updateGroupDto: UpdateGroupDto): Promise<IGroup> {
     const groupExist = await this.groupService.findOne(id);
     if (!groupExist) {
-      throw new HttpException(WRONG_ID, HttpStatus.NOT_FOUND);
+      throw new HttpException(WRONG_GROUP_ID, HttpStatus.NOT_FOUND);
     }
 
     const result = await this.groupService.update(id, updateGroupDto);
@@ -64,7 +62,7 @@ export class GroupController {
     ): Promise<void> {
       const result = await this.groupService.findOne(id);
       if (!result) {
-        throw new HttpException(`${WRONG_ID}${id}`, HttpStatus.NOT_FOUND);
+        throw new HttpException(`${WRONG_GROUP_ID}${id}`, HttpStatus.NOT_FOUND);
       }
       this.groupService.addUsersToGroup(id, usersIds.users);
   }

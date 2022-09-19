@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { IGroup } from '../interfaces/group.interface';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
-import { IUsersGroup } from '../interfaces/users-group.interface copy';
+import { IUsersGroup } from '../interfaces/users-group.interface';
 
 @Injectable()
 export class InMemoryGroupRepository {
@@ -14,7 +14,7 @@ export class InMemoryGroupRepository {
     const isNameUnique = this.checkIsNameUnique(createGroupDto.name);
     let newGroup: IGroup | null = null;
     if (isNameUnique) {
-      newGroup = { ...createGroupDto, id: uuidv4()};
+      newGroup = { ...createGroupDto, id: uuidv4(), users: []};
       this.groups.push(newGroup);
     }
 
@@ -33,7 +33,7 @@ export class InMemoryGroupRepository {
     const index = this.groups.findIndex((group) => group.id === id);
     let updatedGroup: IGroup | null = null;
     if (index >= 0) {
-      updatedGroup = { ...updateGroupDto, id };
+      updatedGroup = { ...this.groups[index], ...updateGroupDto };
       this.groups[index] = updatedGroup;
     }
 

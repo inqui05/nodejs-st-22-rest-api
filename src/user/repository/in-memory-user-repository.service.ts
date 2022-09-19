@@ -5,20 +5,21 @@ import { User } from '../models/user.model';
 import { NewUserDto } from '../dto/new-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { IUser } from '../interfaces/user.interface';
+import { mockedUser } from '../../../test/mocks/mockedUser.mock';
 
 @Injectable()
 export class InMemoryUserRepository {
-  private users: IUser[] = [];
+  private users: IUser[] = [mockedUser];
 
-  getAll(): IUser[] {
+  async getUsers(): Promise<IUser[]> {
     return this.users;
   }
 
-  getOne(id: string): IUser | undefined {
+  async getUserById(id: string): Promise<IUser | undefined> {
     return this.users.find((user: User): boolean => user.id === id && user.isDeleted === false);
   }
 
-  getSome(params: AutoSuggestUserInfoDto): IUser[] {
+  async getUsersWithParams(params: AutoSuggestUserInfoDto): Promise<IUser[]> {
     if (params.loginSubstring) {
       const users = this.users.filter((user: IUser) => {
         if (params.loginSubstring) {
@@ -29,11 +30,11 @@ export class InMemoryUserRepository {
       return this.trimArray(users, params.limit);
     }
 
-    const users = this.getAll();
+    const users = await this.getUsers();
     return this.trimArray(users, params.limit);
   }
 
-  create(userInfo: NewUserDto): IUser | null {
+  async createUser(userInfo: NewUserDto): Promise<IUser | null> {
     const isUniqueLogin = this.checkIsLoginUnique(userInfo.login);
     if (!isUniqueLogin) {
       throw new HttpException(`You can not use this login. Please choose another one.`, HttpStatus.NOT_FOUND);
@@ -44,14 +45,14 @@ export class InMemoryUserRepository {
     return newUser;
   }
 
-  async remove(id: string): Promise<void> {
+  async removeUserById(id: string): Promise<void> {
     const user = this.users.find((user: IUser): boolean => user.id === id && !user.isDeleted);
     if (user) {
       user.isDeleted = true;
     }
   }
 
-  update(id: string, newInfo: UpdateUserDto): IUser | null {
+  async updateUser(id: string, newInfo: UpdateUserDto): Promise<IUser | null> {
     const isUniqueLogin = this.checkIsLoginUnique(newInfo.login, id);
     if (!isUniqueLogin) {
       throw new HttpException(`You can not use this login. Please choose another one.`, HttpStatus.NOT_FOUND);
