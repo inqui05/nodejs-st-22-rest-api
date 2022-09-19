@@ -3,7 +3,7 @@ import { AutoSuggestUserInfoDto } from '../dto/autoSuggestUserInfo.dto';
 import { User } from '../models/user.model';
 import { UserRepository } from '../repository/users-repository.service';
 import { NewUserDto } from '../dto/new-user.dto';
-import { UserDto } from '../interfaces/user.interface';
+import { IUser } from '../interfaces/user.interface';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UserService {
     return this.UserRepository.getOne(id);
   }
 
-  async createUser(newUserInfo: NewUserDto): Promise<UserDto | null> {
+  async createUser(newUserInfo: NewUserDto): Promise<IUser | null> {
     return this.UserRepository.create(newUserInfo);
   }
 
@@ -27,11 +27,11 @@ export class UserService {
     this.UserRepository.remove(id);
   }
 
-  async updateUser(id: string, newUserInfo: UpdateUserDto): Promise<UserDto | null> {
+  async updateUser(id: string, newUserInfo: UpdateUserDto): Promise<IUser | null> {
     return this.UserRepository.update(id, newUserInfo);
   }
 
-  async getUsersWithParams(params: AutoSuggestUserInfoDto): Promise<UserDto[]> {
+  async getUsersWithParams(params: AutoSuggestUserInfoDto): Promise<IUser[]> {
     return this.UserRepository.getSome(params);
   }
 }

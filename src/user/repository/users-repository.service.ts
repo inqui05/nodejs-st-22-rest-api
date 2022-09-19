@@ -4,7 +4,7 @@ import { User } from '../models/user.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { NewUserDto } from '../dto/new-user.dto';
-import { UserDto } from '../interfaces/user.interface';
+import { IUser } from '../interfaces/user.interface';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class UserRepository {
     return this.userModel.findOne({ where: { [Op.and]: [{ id }, { isDeleted: false }] } });
   }
 
-  async getSome(params: AutoSuggestUserInfoDto): Promise<UserDto[]> {
+  async getSome(params: AutoSuggestUserInfoDto): Promise<IUser[]> {
     const users = await this.userModel.findAll({
       where: {[Op.and]: [{ login:
         {[Op.iLike]: `%${params.loginSubstring}%` }}, { isDeleted: false }]},
@@ -29,7 +29,7 @@ export class UserRepository {
     return users.sort((a, b) => a.login.localeCompare(b.login));
   }
 
-  async create(newUserInfo: NewUserDto): Promise<UserDto | null> {
+  async create(newUserInfo: NewUserDto): Promise<IUser | null> {
     const isLoginUnique = await this.checkIsLoginUnique(newUserInfo.login);
     return isLoginUnique ? this.userModel.create(newUserInfo) : null;
   }
@@ -38,7 +38,7 @@ export class UserRepository {
     this.userModel.update({ isDeleted: true }, { where: { id } });
   }
 
-  async update(id: string, newUserInfo: UpdateUserDto): Promise<UserDto | null> {
+  async update(id: string, newUserInfo: UpdateUserDto): Promise<IUser | null> {
     await this.userModel.update(newUserInfo, { where: { id } });
     return this.userModel.findOne({ where: { id } });
   }
